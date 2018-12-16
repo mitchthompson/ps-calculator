@@ -17,6 +17,10 @@ class PayscaleCalculator {
 
   }
 
+  function register() {
+    add_action('admin_enqueue_scripts', array( $this, 'enqueue'));
+  }
+
   function activate(){
     //create custom data tables
     $this->custom_data_tables();
@@ -24,8 +28,14 @@ class PayscaleCalculator {
   }
 
   function deactivate(){
-    flush_rewrite_rules();
     // temp drop tables only for dev
+    global $wpdb;
+    $wpdb->query('DROP TABLE IF EXISTS wp_Software_Prices');
+    $wpdb->query('DROP TABLE IF EXISTS wp_Software_Ranges');
+    $wpdb->query('DROP TABLE IF EXISTS wp_Software_Options');
+    $wpdb->query('DROP TABLE IF EXISTS wp_Software_Groups');
+    $wpdb->query('DROP TABLE IF EXISTS wp_Software');
+    flush_rewrite_rules();
   }
 
   function uninstall(){
@@ -36,10 +46,16 @@ class PayscaleCalculator {
     createDataTables();
   }
 
+  function enqueue() {
+    wp_enqueue_style('payscale_calculator_style', plugins_url('/assets/admin_styles.css', __FILE__));
+    wp_enqueue_script('payscale_calculator_script', plugins_url('/assets/scripts.js', __FILE__));
+  }
+
 }
 
 if( class_exists('PayscaleCalculator')) {
   $payscaleCalculator = new PayscaleCalculator();
+  $payscaleCalculator->register();
 }
 
 //activation
@@ -47,9 +63,6 @@ register_activation_hook( __FILE__, array($payscaleCalculator, 'activate'));
 
 //deactivation
 register_deactivation_hook( __FILE__, array($payscaleCalculator, 'deactivate'));
-
-//uninstall
-register_uninstall_hook( __FILE__, array($payscaleCalculator, 'deactivate'));
 
 
 function createDataTables() {
