@@ -1,11 +1,13 @@
 <?php
 /**
-* @package PayscaleCalculator
+* @package PricingCalculator
 **/
 
-class PayscaleCalculatorActivate {
+namespace Inc\Base;
 
-  public static function createCustomTables() {
+class Activate {
+
+  public static function activate() {
     global $wpdb;
     $wpdb->show_errors();
 

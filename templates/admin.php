@@ -1,1 +1,1 @@
-<h1>Payscale Calculator Plugin</h1>
+<h1>Pricing Calculator Plugin</h1>

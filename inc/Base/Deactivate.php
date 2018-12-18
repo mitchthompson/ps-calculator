@@ -1,14 +1,13 @@
 <?php
 /**
-* @package PayscaleCalculator
+* @package PricingCalculator
 **/
 
-class PayscaleCalculatorDeactivate {
+namespace Inc\Base;
 
-  function __construct(){
+class Deactivate {
 
-  }
-
+  //removes custom tables from DB. only for dev. this will be removed and only happen on plugin removal
   public static function deactivate(){
     global $wpdb;
     $wpdb->query('DROP TABLE IF EXISTS wp_Software_Prices');
